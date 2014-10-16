@@ -1,7 +1,6 @@
 import java.rmi.Naming;
 import java.rmi.registry.Registry;
-
-
+/**/
 public class StartServidorArchivosRMI {
 
 	public static void main(String[] args) {
