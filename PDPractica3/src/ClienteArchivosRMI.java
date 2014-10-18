@@ -24,6 +24,8 @@ public class ClienteArchivosRMI {
 	    	
 	    	//ServidorArchivosRMI servidor = new ServidorArchivosRMI();
 			servidor.Leer("C:\\prueba.txt", 0, cant, buffer);
+			System.out.println("Leyo: " +buffer);
+			System.out.println("Termino cliente");
  
  
 	    } catch (Exception e) { 
