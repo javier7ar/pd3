@@ -74,6 +74,7 @@ public class ServidorArchivosRMI implements IServidorArchivosRMI, Serializable {
 			salida.close();
 		}catch(Exception e){
 			cant = -1;
+			System.out.println("Excepcion " + e);
 		}
 		System.out.println("cantidad escrita: "+String.valueOf(cant));
 		return cant;
