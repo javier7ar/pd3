@@ -1,9 +1,11 @@
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.rmi.RemoteException;
+import java.io.File;
 
 
 public class ServidorArchivosRMI implements IServidorArchivosRMI, Serializable {
@@ -52,9 +54,21 @@ public class ServidorArchivosRMI implements IServidorArchivosRMI, Serializable {
 	}
 
 	@Override
-	public int Escribir(String nombreArchivo, int cantidad, byte[] buffer) throws RemoteException {
-		// TODO Auto-generated method stub
-		return 0;
+	public int Escribir(String nombreArchivo, int cantidad, byte[] buffer) throws RemoteException {		
+		FileOutputStream salida;		
+		int cant;
+		
+		try{						
+			//si el archivo existe lo abre, sino lo crea
+			salida = new FileOutputStream(nombreArchivo, (new File(nombreArchivo)).exists());
+			salida.write(buffer, 0, cantidad);
+			//si pasa sin tirar error, pudo escribir todo
+			cant = cantidad;
+			salida.close();
+		}catch(Exception e){
+			cant = -1;
+		}
+		return cant;
 	}
 
 }
