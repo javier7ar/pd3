@@ -3,6 +3,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.io.File;
@@ -23,6 +24,10 @@ public class ServidorArchivosRMI implements IServidorArchivosRMI, Serializable {
 		int cantLeida = 0;
 		try
 		{
+			RandomAccessFile arch = new RandomAccessFile(nombreArchivo, "r");
+			
+			
+			
 			FileInputStream fin = new FileInputStream(file);
 			
 			byte fileContent[] = new byte[cantidad];
@@ -62,12 +67,15 @@ public class ServidorArchivosRMI implements IServidorArchivosRMI, Serializable {
 			//si el archivo existe lo abre, sino lo crea
 			salida = new FileOutputStream(nombreArchivo, (new File(nombreArchivo)).exists());
 			salida.write(buffer, 0, cantidad);
-			//si pasa sin tirar error, pudo escribir todo
-			cant = cantidad;
+			System.out.println("buffer: "+ new String(buffer));
+			//si pasa sin tirar error, pudo escribir todo porque write no devuelve cantidad escrita
+			cant = cantidad;			
+			salida.flush();
 			salida.close();
 		}catch(Exception e){
 			cant = -1;
 		}
+		System.out.println("cantidad escrita: "+String.valueOf(cant));
 		return cant;
 	}
 
