@@ -12,7 +12,7 @@ import java.io.File;
 public class ServidorArchivosRMI implements IServidorArchivosRMI, Serializable {
 	
 	private static final long serialVersionUID = 1L;
-	private String rutaArchivosServidor = "/home/lilauth";
+	private static String rutaArchivosServidor = "C:\\";
 	
 	protected ServidorArchivosRMI() throws RemoteException {
 		super();
@@ -21,24 +21,27 @@ public class ServidorArchivosRMI implements IServidorArchivosRMI, Serializable {
 	@Override
 	public int Leer(String nombreArchivo, int posicion, int cantidad, byte[] buffer) throws RemoteException {
 		
-		File file = new File(rutaArchivosServidor+nombreArchivo);
+		String archivo = ServidorArchivosRMI.rutaArchivosServidor + nombreArchivo;
+		File file = new File(archivo);
 		int cantLeida = 0;
 		
 		try
 		{
 			//si el archivo existe
-			if((new File(rutaArchivosServidor+nombreArchivo)).exists()){
-				RandomAccessFile arch = new RandomAccessFile(rutaArchivosServidor+nombreArchivo, "r");
-				if(arch.length() > (posicion+cantidad)){
+			if((new File(archivo)).exists()){
+				RandomAccessFile arch = new RandomAccessFile(archivo, "r");
+				if(arch.length() > (posicion)){
 					arch.seek(posicion);
 					cantLeida = arch.read(buffer, 0, cantidad);
 					arch.close();
 				}
 				else{
+					System.out.println("posicion incorrecta");
 					cantLeida = 0;
 				}
 			}
 			else{
+				System.out.println("archivo no existe: "+archivo);
 				cantLeida = 0;
 				}
 			/*			
@@ -73,13 +76,14 @@ public class ServidorArchivosRMI implements IServidorArchivosRMI, Serializable {
 
 	@Override
 	public int Escribir(String nombreArchivo, int cantidad, byte[] buffer) throws RemoteException {		
+		String archivo = ServidorArchivosRMI.rutaArchivosServidor + nombreArchivo;
 		FileOutputStream salida;		
 		int cant;
 		
 		try{	
 			System.out.println("buffer: "+ new String(buffer));
 			//si el archivo existe lo abre, sino lo crea
-			salida = new FileOutputStream(rutaArchivosServidor+nombreArchivo, (new File(rutaArchivosServidor+nombreArchivo)).exists());
+			salida = new FileOutputStream(archivo, (new File(archivo)).exists());
 			salida.write(buffer, 0, cantidad);			
 			//si pasa sin tirar error, pudo escribir todo porque write no devuelve cantidad escrita
 			cant = cantidad;			

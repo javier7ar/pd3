@@ -9,7 +9,8 @@ import java.util.Arrays;
 
 public class ClienteArchivosRMI {
 	
-	private static int cantXLote = 10;
+	private static int cantXLote = 100;
+	private static String rutaArchivosCliente = "C:\\";
 	
 	public static void main(String[] args) {
 		
@@ -29,10 +30,14 @@ public class ClienteArchivosRMI {
 	    	servidor = (IServidorArchivosRMI) Naming.lookup(rname);
 	    	//ServidorArchivosRMI servidor = new ServidorArchivosRMI();
 	    	
-	    	leerArchivo(servidor,"C:\\prueba.txt");
+	    	leerArchivo(servidor,"prueba.txt");
  
  
-	    } catch (Exception e) { 
+	    } 
+	    catch (RemoteException e) { 
+	    	System.out.println("Excepcion Remota: " + e);
+	    }
+	    catch (Exception e) { 
 	    	e.printStackTrace(); 
 	    }		  
 		
@@ -44,21 +49,24 @@ public class ClienteArchivosRMI {
 		int cantLeida, pos = 0;
 		String leyo;
 		byte buffer[] = new byte[cantXLote];
-		FileOutputStream fout = new FileOutputStream("C:\\copia.txt");
+		FileOutputStream fout = new FileOutputStream(rutaArchivosCliente+"copiaClie.txt");
 		
 		while (0 < (cantLeida = servidor.Leer(archivo, pos, cantXLote, buffer))) {
+		cantLeida = servidor.Leer(archivo, pos, cantXLote, buffer);
 			leyo = new String(buffer,0,cantLeida); 
 			System.out.println("Leyo: " + leyo);
 			
 			fout.write(buffer, 0, cantLeida);
+			servidor.Escribir("copia "+archivo, cantLeida, buffer);
 			
 			pos += cantLeida;
 			
 		}
-		
+		fout.flush();
 		fout.close();
 		
 		System.out.println("Termino de leer");
 	}
+	
 
 }
