@@ -12,7 +12,8 @@ import java.io.File;
 public class ServidorArchivosRMI implements IServidorArchivosRMI, Serializable {
 	
 	private static final long serialVersionUID = 1L;
-
+	private String rutaArchivosServidor = "/home/lilauth";
+	
 	protected ServidorArchivosRMI() throws RemoteException {
 		super();
 	}
@@ -20,21 +21,34 @@ public class ServidorArchivosRMI implements IServidorArchivosRMI, Serializable {
 	@Override
 	public int Leer(String nombreArchivo, int posicion, int cantidad, byte[] buffer) throws RemoteException {
 		
-		File file = new File(nombreArchivo);
+		File file = new File(rutaArchivosServidor+nombreArchivo);
 		int cantLeida = 0;
+		
 		try
 		{
-			RandomAccessFile arch = new RandomAccessFile(nombreArchivo, "r");
-			
-			
-			
+			//si el archivo existe
+			if((new File(rutaArchivosServidor+nombreArchivo)).exists()){
+				RandomAccessFile arch = new RandomAccessFile(rutaArchivosServidor+nombreArchivo, "r");
+				if(arch.length() > (posicion+cantidad)){
+					arch.seek(posicion);
+					cantLeida = arch.read(buffer, 0, cantidad);
+					arch.close();
+				}
+				else{
+					cantLeida = 0;
+				}
+			}
+			else{
+				cantLeida = 0;
+				}
+			/*			
 			FileInputStream fin = new FileInputStream(file);
 			
 			byte fileContent[] = new byte[cantidad];
 			 
 			cantLeida = fin.read(fileContent,posicion,cantidad);
 			System.arraycopy(fileContent,0,buffer,0,cantLeida);
-			 
+			 */
 			// Para ver el contenido del archivo
 			/*
 			String strFileContent = new String(buffer);
@@ -42,8 +56,7 @@ public class ServidorArchivosRMI implements IServidorArchivosRMI, Serializable {
 			System.out.println("Bytes Leidos : "+cantLeida);
 			System.out.println("File content : ");
 			System.out.println(strFileContent);
-			*/
-			fin.close();
+			*/			
 		 
 		}
 		catch(FileNotFoundException e)
@@ -66,14 +79,14 @@ public class ServidorArchivosRMI implements IServidorArchivosRMI, Serializable {
 		try{	
 			System.out.println("buffer: "+ new String(buffer));
 			//si el archivo existe lo abre, sino lo crea
-			salida = new FileOutputStream(nombreArchivo, (new File(nombreArchivo)).exists());
+			salida = new FileOutputStream(rutaArchivosServidor+nombreArchivo, (new File(rutaArchivosServidor+nombreArchivo)).exists());
 			salida.write(buffer, 0, cantidad);			
 			//si pasa sin tirar error, pudo escribir todo porque write no devuelve cantidad escrita
 			cant = cantidad;			
 			salida.flush();
 			salida.close();
 		}catch(Exception e){
-			cant = -1;
+			cant = 0;
 			System.out.println("Excepcion " + e);
 		}
 		System.out.println("cantidad escrita: "+String.valueOf(cant));
