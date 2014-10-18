@@ -63,11 +63,11 @@ public class ServidorArchivosRMI implements IServidorArchivosRMI, Serializable {
 		FileOutputStream salida;		
 		int cant;
 		
-		try{						
+		try{	
+			System.out.println("buffer: "+ new String(buffer));
 			//si el archivo existe lo abre, sino lo crea
 			salida = new FileOutputStream(nombreArchivo, (new File(nombreArchivo)).exists());
-			salida.write(buffer, 0, cantidad);
-			System.out.println("buffer: "+ new String(buffer));
+			salida.write(buffer, 0, cantidad);			
 			//si pasa sin tirar error, pudo escribir todo porque write no devuelve cantidad escrita
 			cant = cantidad;			
 			salida.flush();
