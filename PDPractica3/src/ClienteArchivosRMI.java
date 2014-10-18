@@ -1,10 +1,9 @@
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.Registry;
-import java.util.Arrays;
+
 
 
 public class ClienteArchivosRMI {
@@ -15,7 +14,7 @@ public class ClienteArchivosRMI {
 	public static void main(String[] args) {
 		
 		
-		/* Look for hostname and msg length in the command line */ 
+		// Controlo los argumentos
 	    if (args.length != 1) 
 	    { 
 	    	System.out.println("1 argument needed: (remote) hostname"); 
@@ -26,10 +25,15 @@ public class ClienteArchivosRMI {
 	 
 	    try { 
 	    	String rname = "//" + args[0] + ":" + Registry.REGISTRY_PORT + "/remote"; 
- 
+	    	
+	    	// prueba remota
 	    	servidor = (IServidorArchivosRMI) Naming.lookup(rname);
+	    	
+	    	// prueba local
 	    	//ServidorArchivosRMI servidor = new ServidorArchivosRMI();
 	    	
+	    	// leeo y copio el archivo
+	    	// el archivo debe existir
 	    	leerArchivo(servidor,"prueba.txt");
  
  
@@ -52,16 +56,21 @@ public class ClienteArchivosRMI {
 		FileOutputStream fout = new FileOutputStream(rutaArchivosCliente+"copiaClie.txt");
 		
 		while (0 < (cantLeida = servidor.Leer(archivo, pos, cantXLote, buffer))) {
-		cantLeida = servidor.Leer(archivo, pos, cantXLote, buffer);
+			
 			leyo = new String(buffer,0,cantLeida); 
 			System.out.println("Leyo: " + leyo);
 			
+			// Voy guardando mi copia
 			fout.write(buffer, 0, cantLeida);
+			
+			// Voy creando la copia del servidor
 			servidor.Escribir("copia "+archivo, cantLeida, buffer);
 			
 			pos += cantLeida;
 			
 		}
+		
+		// Guardo los cambios de mi copia
 		fout.flush();
 		fout.close();
 		

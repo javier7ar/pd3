@@ -1,12 +1,10 @@
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.io.Serializable;
 import java.rmi.RemoteException;
-import java.io.File;
 
 
 public class ServidorArchivosRMI implements IServidorArchivosRMI, Serializable {
@@ -22,7 +20,6 @@ public class ServidorArchivosRMI implements IServidorArchivosRMI, Serializable {
 	public int Leer(String nombreArchivo, int posicion, int cantidad, byte[] buffer) throws RemoteException {
 		
 		String archivo = ServidorArchivosRMI.rutaArchivosServidor + nombreArchivo;
-		File file = new File(archivo);
 		int cantLeida = 0;
 		
 		try
@@ -44,14 +41,7 @@ public class ServidorArchivosRMI implements IServidorArchivosRMI, Serializable {
 				System.out.println("archivo no existe: "+archivo);
 				cantLeida = 0;
 				}
-			/*			
-			FileInputStream fin = new FileInputStream(file);
-			
-			byte fileContent[] = new byte[cantidad];
-			 
-			cantLeida = fin.read(fileContent,posicion,cantidad);
-			System.arraycopy(fileContent,0,buffer,0,cantLeida);
-			 */
+
 			// Para ver el contenido del archivo
 			/*
 			String strFileContent = new String(buffer);
