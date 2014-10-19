@@ -1,4 +1,4 @@
-package ejer5;
+
 
 import java.rmi.Remote;
 

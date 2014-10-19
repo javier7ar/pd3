@@ -10,7 +10,7 @@ import java.rmi.RemoteException;
 public class ServidorArchivosRMI implements IServidorArchivosRMI, Serializable {
 	
 	private static final long serialVersionUID = 1L;
-	private static String rutaArchivosServidor = "C:\\";
+	private static String rutaArchivosServidor = "/home/lilauth/";
 	
 	protected ServidorArchivosRMI() throws RemoteException {
 		super();

@@ -9,7 +9,7 @@ import java.rmi.registry.Registry;
 public class ClienteArchivosRMI {
 	
 	private static int cantXLote = 100;
-	private static String rutaArchivosCliente = "C:\\";
+	private static String rutaArchivosCliente = "/home/lilauth/";
 	
 	public static void main(String[] args) {
 		
