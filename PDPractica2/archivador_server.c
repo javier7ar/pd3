@@ -14,20 +14,21 @@ escribir_1_svc(Args_Escribir *argp, struct svc_req *rqstp)
 	FILE *archivo;
 	int i, j;
 	char contenido[1000];
-	char caracter;
+	int caracter;
 	
-	archivo = fopen (argp->nombreArchivo, "a" );        
+	archivo = fopen(argp->nombreArchivo, "a" );
 	if (archivo==NULL) {
 		result = -1; /*indico el error con longitud negativa*/
 	}
 	else{   /*pudo abrir el archivo, recupero el contenido hasta posicion o hasta el máximo*/
-		i = 0;
-		while ((feof(archivo) == 0) && (i < argp->posicion)){
-			caracter = fgetc(archivo);			
-			contenido[i]= caracter;
+		/*i = 0;
+		while ((caracter = fgetc(archivo) != EOF) && (i < argp->posicion)){
+			contenido[i]= (char)caracter;
 			i = i + 1;
 	    	}
-		fclose(archivo);	
+		fclose(archivo);*/
+		i = read(archivo, contenido, 1000);
+		/*n = read(sockfd,buffer,255);*/
 		archivo = fopen (argp->nombreArchivo, "w" ); 
 		j = 0;
 		while(i < argp->dato.long_datos){

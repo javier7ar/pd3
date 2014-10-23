@@ -8,6 +8,16 @@ w+ - open for reading and writing (overwrite file)
 a+ - open for reading and writing (append if file exists)
 
 /*Ejemplo de uso*/
+/*Here's a simple example of using fopen:*/
 
 FILE *fp;
 fp=fopen("c:\\test.txt", "r");
+
+/*When you're done working with a file, you should close it using the function*/
+int fclose(FILE *a_file);
+
+/*It is also possible to read (or write) a single character at a time*/
+int fgetc (FILE *fp);
+
+/*The fputc function allows you to write a character at a time*/
+int fputc( int c, FILE *fp );
