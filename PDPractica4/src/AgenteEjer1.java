@@ -1,12 +1,9 @@
 import java.lang.management.ManagementFactory;
 import java.util.Date;
-
 import jade.core.*;
 import jade.core.Runtime;
 import jade.wrapper.ContainerController;
 import jade.wrapper.ControllerException;
-
-
 
 public class AgenteEjer1 extends Agent {
 
