@@ -10,6 +10,7 @@ import jade.core.ProfileImpl;
 import jade.core.Runtime;
 import jade.wrapper.ContainerController;
 
+@SuppressWarnings("serial")
 public class MobileAgent extends Agent {
 	private ContainerID destino;
 	private ContainerID destino2;
@@ -81,7 +82,7 @@ public class MobileAgent extends Agent {
 		catch (Exception e) {
 			System.out.println("\n\n\n No fue posible migrar el agente \n\n\n");
 			}				
-		//suma el archivo de números
+		//suma el archivo de nÃºmeros
 		sumar();
 		try {			
 			//vuelve al main-container
@@ -91,7 +92,7 @@ public class MobileAgent extends Agent {
 		catch (Exception e) {
 			System.out.println("\n\n\n No fue posible migrar el agente \n\n\n");
 			}
-		System.out.println("termina su ejecución"); 
+		System.out.println("termina su ejecuciÃ³n"); 
 		doDelete();
 	}	
 }
