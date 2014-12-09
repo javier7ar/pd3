@@ -1,15 +1,13 @@
 import java.lang.management.ManagementFactory;
 import java.util.Date;
 import jade.core.*;
-import jade.core.Runtime;
-import jade.wrapper.ContainerController;
-import jade.wrapper.ControllerException;
+
 
 public class AgenteEjer1 extends Agent {
 
 	private static final long serialVersionUID = 1L;
-	private int CANT_CONTAINERS = 5;
-	private int proximo_agente = 0;
+	private int CANT_CONTAINERS = 3;
+	private int proximo_agente = 1;
 	private Date fechaInicio;
 	private Date fechaTermino;
 	
@@ -18,12 +16,13 @@ public class AgenteEjer1 extends Agent {
 		// Tomo la fecha de inicio
 		fechaInicio = new Date ();
 		
-		// muevo al primer container
+		// muevo al Main-Container para arrancar
 		try {
-			Location destino = getNextContainer();
+			ContainerID destino = new ContainerID("Main-Container", null); 
+			 
 			doMove(destino);
 		} 
-		catch (ControllerException e) {
+		catch (Exception e) {
 			System.out.println("Error al mover el agente al inicio");
 			e.printStackTrace();
 		}
@@ -32,53 +31,56 @@ public class AgenteEjer1 extends Agent {
 	@Override
 	protected void afterMove() {
 		// Llego
-		System.out.println("El agente " + (getAID()).getName() + " ha llegado a "+here().getName());
+		System.out.println("El agente " + (getAID()).getName() + " ha llegado a "+here().getName()+"\n");
 		
 		// Muestro la info del sistema
 		mostrarInfoSistema();
 		System.out.println("\n");
 		
-		// muevo al proximo
+		long espera = 2000;
+		if (proximo_agente == 1) {
+			System.out.println("Esperando para volver a recorrer... \n");
+			espera = 5000;
+		}
+		
 		try {
-			Location destino = getNextContainer();
-			// si no llegue el final, muevo
-			if (destino != null) {
-				doMove(destino);
-			}
-			else {
-				fechaTermino = new Date ();
-				long tiempoTotal = fechaTermino.getTime() - fechaInicio.getTime();
-				System.out.println("Fin del recorrido!");
-				System.out.println("Timpo del recorrido: "+String.valueOf(tiempoTotal)+" ms.");
-			}
+			Thread.currentThread().sleep(espera);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
+		System.out.println("moviendo al proximo... \n");
+		
+		String proximo = nextAgente();
+		
+		try {
+			//ContainerID destino = new ContainerID("Main-Container", null); 
+			ContainerID destino = new ContainerID(proximo, null); 
+			//Location destino = getNextContainer();
+			doMove(destino);
 		} 
-		catch (ControllerException e) {
-			System.out.println("Error al mover el agente");
+		catch (Exception e) {
+			System.out.println("Error al mover el agente al inicio");
 			e.printStackTrace();
 		}
 		
 	}
 	
-	private Location getNextContainer() throws ControllerException{
+	private String nextAgente() {
+		String proximo;
 		
-		Location next = null;
-		
-		if (proximo_agente < CANT_CONTAINERS)  {
-			Runtime rt = Runtime.instance(); 
-			Profile p = new ProfileImpl();
-			ContainerController cc = rt.createAgentContainer(p);	
-			
-			next = new ContainerID(cc.getContainerName(), null);
-			
-			proximo_agente++;			
+		if (proximo_agente == CANT_CONTAINERS) {
+			proximo = "Main-Container";	
+			proximo_agente = 1;
 		}
-		else if (proximo_agente == CANT_CONTAINERS) {
-			next = new ContainerID("Main-Container", null);
+		else {
+			proximo = "Container-"+String.valueOf(proximo_agente);			
 			proximo_agente++;
 		}
 		
-		return next;
+		return proximo;
 	}
+	
 	
 	private void mostrarInfoSistema() {
 		java.lang.management.OperatingSystemMXBean os = ManagementFactory.getOperatingSystemMXBean();
@@ -94,7 +96,7 @@ public class AgenteEjer1 extends Agent {
 		else {
 			System.out.println("Informacion del sistema no disponible!");
 		}
-			
+
 	}
 
 }
