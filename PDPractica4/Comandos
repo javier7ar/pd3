@@ -1,0 +1,11 @@
+/*para compilar*/
+javac -classpath lib/jade.jar -d classes FirstAgent.java
+
+/*arrancar entorno jade*/
+java -cp lib/jade.jar:classes jade.Boot -gui 
+
+/*agregar container*/
+java -cp lib/jade.jar:classes jade.Boot -gui -container -host localhost
+
+/*arrancar agente jade*/
+java -cp lib/jade.jar:classes jade.Boot -gui -container -host localhost -agents thesecond:SecondAgent
