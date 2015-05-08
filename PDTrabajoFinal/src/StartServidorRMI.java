@@ -46,10 +46,10 @@ public class StartServidorRMI {
 			
 			
 			// Registro la IP
-			InetAddress address = InetAddress.getLocalHost();
-			String ipLocal = address.getHostAddress();
+			//InetAddress address = InetAddress.getLocalHost();
+			String ipLocal = InetAddress.getLocalHost().getHostAddress(); //address.getHostAddress();
 			
-			System.out.println("Envio IP a registrar");
+			System.out.println("Envio IP a registrar "+ipLocal);
 			servidorDirectorio.registrarServidor(ipLocal);
 			
 			System.out.println("Servidor registrado en el directorio");
