@@ -1,4 +1,5 @@
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.rmi.Naming;
 import java.rmi.registry.Registry;
 
@@ -20,7 +21,7 @@ public class StartServidorRMI {
 			
 			Naming.rebind(rname, robject);			
 			
-			System.out.println("Servidor registrado");			
+			System.out.println("Servidor RMI registrado");			
 			
 			
 		} catch (Exception e) {
@@ -30,12 +31,6 @@ public class StartServidorRMI {
 		}
 		
 		try{
-			/*
-			String rname = "//" + args[0] + ":" + Registry.REGISTRY_PORT + "/remote";
-			IServidorDirectorio remoto = (IServidorDirectorio) Naming.lookup(rname);
-			servidor = remoto.solicitarServidor();
-			*/
-			
 					
 			String rnameDirectorio = "//" + args[0] + ":" + Registry.REGISTRY_PORT + "/remote"; 			
 			System.out.println("rnameDirectorio: "+rnameDirectorio);
@@ -47,7 +42,7 @@ public class StartServidorRMI {
 			
 			// Registro la IP
 			//InetAddress address = InetAddress.getLocalHost();
-			String ipLocal = InetAddress.getLocalHost().getHostAddress(); //address.getHostAddress();
+			String ipLocal = StartServidorRMI.getIP();
 			
 			System.out.println("Envio IP a registrar "+ipLocal);
 			servidorDirectorio.registrarServidor(ipLocal);
@@ -62,5 +57,28 @@ public class StartServidorRMI {
 
 
 	}
+	
+	private static String getIP() throws UnknownHostException {
+		InetAddress address = InetAddress.getLocalHost();
+		 // Cogemos la IP 
+		byte[] bIPAddress = address.getAddress();
+		
+		// IP en formato String
+		String sIPAddress = "";
+		 
+		for (int x=0; x<bIPAddress.length; x++) {
+		  if (x > 0) {
+		    // A todos los numeros les anteponemos
+		    // un punto menos al primero    
+		    sIPAddress += ".";
+		  }
+		  // Jugamos con los bytes y cambiamos el bit del signo
+		  sIPAddress += bIPAddress[x] & 255;	   
+		}
+		System.out.println("Envio IP a registrar "+sIPAddress);
+		
+		return sIPAddress;
+	}
+
 
 }

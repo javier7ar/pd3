@@ -8,13 +8,13 @@ public class StartServidorDirectorio {
 		try{
 			ServidorDirectorio robject = new ServidorDirectorio();
 			
-			
+		
 			String rname = "//localhost:" + Registry.REGISTRY_PORT + "/remote";
 			
 			Naming.rebind(rname, robject);
 			
 			
-			System.out.println("Servidor registrado");
+			System.out.println("Servidor Directorio registrado");
 			
 		} catch (Exception e) {
 			System.out.println("Error en Naming.rebind");
