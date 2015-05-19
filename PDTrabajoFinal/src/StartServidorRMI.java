@@ -1,5 +1,3 @@
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.rmi.Naming;
 import java.rmi.registry.Registry;
 
@@ -42,7 +40,7 @@ public class StartServidorRMI {
 			
 			// Registro la IP
 			//InetAddress address = InetAddress.getLocalHost();
-			String ipLocal = StartServidorRMI.getIP();
+			String ipLocal = IPManager.getIP();
 			
 			System.out.println("Envio IP a registrar "+ipLocal);
 			servidorDirectorio.registrarServidor(ipLocal);
@@ -58,27 +56,7 @@ public class StartServidorRMI {
 
 	}
 	
-	private static String getIP() throws UnknownHostException {
-		InetAddress address = InetAddress.getLocalHost();
-		 // Cogemos la IP 
-		byte[] bIPAddress = address.getAddress();
-		
-		// IP en formato String
-		String sIPAddress = "";
-		 
-		for (int x=0; x<bIPAddress.length; x++) {
-		  if (x > 0) {
-		    // A todos los numeros les anteponemos
-		    // un punto menos al primero    
-		    sIPAddress += ".";
-		  }
-		  // Jugamos con los bytes y cambiamos el bit del signo
-		  sIPAddress += bIPAddress[x] & 255;	   
-		}
-		System.out.println("Envio IP a registrar "+sIPAddress);
-		
-		return sIPAddress;
-	}
+
 
 
 }

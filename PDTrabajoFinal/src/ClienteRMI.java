@@ -7,8 +7,8 @@ public class ClienteRMI {
 	{
 		String servidor;
 	
-		if (args.length != 1){
-			System.out.println("Se necesita un parametro: direccion ip del servidor directorio");
+		if (args.length != 2){
+			System.out.println("Se necesita 2 parametros: direccion ip del servidor directorio y mensaje a enviar");
 			System.exit(1);
 		}
 		try {
@@ -23,9 +23,12 @@ public class ClienteRMI {
 				IServidorRMI servidorFinal = (IServidorRMI) Naming.lookup(sf);
 				System.out.println("Conectado");
 				
-				int bufferlength = 100;
-				byte[] buffer = new byte[bufferlength];							
-				servidorFinal.sendThisBack(buffer);
+				//int bufferlength = 100;
+				//byte[] buffer = new byte[bufferlength];
+				System.out.println("Enviando mensaje...");
+				String mensaje = args[0];
+				String respuesta = servidorFinal.sendThisBack(mensaje);
+				System.out.println("Se recibio:"+respuesta);
 				
 				System.out.println("Termino");
 			} catch (Exception e) {
