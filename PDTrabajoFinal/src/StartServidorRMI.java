@@ -13,10 +13,9 @@ public class StartServidorRMI {
 	    } 
 
 		try{
-			ServidorRMI robject = new ServidorRMI();
-						
-			String rname = "//localhost:" + Registry.REGISTRY_PORT + "/remote";
-			
+			// Registro el servidor en el RMIRegistry
+			ServidorRMI robject = new ServidorRMI();						
+			String rname = "//localhost:" + Registry.REGISTRY_PORT + "/remote";			
 			Naming.rebind(rname, robject);			
 			
 			System.out.println("Servidor RMI registrado");			
@@ -29,19 +28,15 @@ public class StartServidorRMI {
 		}
 		
 		try{
-					
+			// Registro el servidor en el ServidorDirectorio
 			String rnameDirectorio = "//" + args[0] + ":" + Registry.REGISTRY_PORT + "/remote"; 			
 			System.out.println("rnameDirectorio: "+rnameDirectorio);
 	    	
-	    	// prueba remota
 			IServidorDirectorio servidorDirectorio = (IServidorDirectorio) Naming.lookup(rnameDirectorio);
-			System.out.println("lookup hecho");
-			
+			System.out.println("lookup hecho");	
 			
 			// Registro la IP
-			//InetAddress address = InetAddress.getLocalHost();
-			String ipLocal = IPManager.getIP();
-			
+			String ipLocal = IPManager.getIP();		
 			System.out.println("Envio IP a registrar "+ipLocal);
 			servidorDirectorio.registrarServidor(ipLocal);
 			

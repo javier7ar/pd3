@@ -14,19 +14,24 @@ public class ServidorDirectorio extends UnicastRemoteObject implements IServidor
 
 	protected ServidorDirectorio() throws RemoteException {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public boolean registrarServidor(String ip) throws RemoteException {
-		System.out.println("Registra IP "+ip);
+		
+		// Usado por los ServidorRMI para registrarse al directorio
+		
+		// Agrego el servidor (la IP) a la lista
 		servidores.add(ip);
+		System.out.println("Registra IP "+ip);
+		
 		return true;
 	}
 
 	@Override
 	public String solicitarIPServidor() throws RemoteException {
-
+		
+		// Obtengo la IP del siguiente servidor
 		String ip = ipProxServidor();
 		
 		System.out.println("Devuelve "+ip);
@@ -36,7 +41,11 @@ public class ServidorDirectorio extends UnicastRemoteObject implements IServidor
 
 	@Override
 	public IServidorRMI solicitarServidor() throws RemoteException {
+		
+		// Obtengo la IP del siguiente servidor
 		String ip = ipProxServidor();
+		
+		// Servidor a devolver, si no hay servidores registrados se devuelve null
 		IServidorRMI servidor = null;
 		
 		if (ip != "") {	
@@ -58,9 +67,16 @@ public class ServidorDirectorio extends UnicastRemoteObject implements IServidor
 		return servidor;
 	}
 	
-	private String ipProxServidor(){
-		proximoServidor++;
+	private String ipProxServidor(){	
+		
+		// Devuelve el proximo ServidorRMI a usar
+		// Funciona como una lista circular FIFO, para tratar de balancear la carga de los Servidores
+		
+		// IP a devolver, si no hay servidor registrado se devuelve ""
 		String ip = "";
+		
+		// Obtengo el proximo
+		proximoServidor++;
 		if (servidores.size() > 0) {
 			ip = servidores.get(proximoServidor % servidores.size()) ;
 		}

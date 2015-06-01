@@ -13,16 +13,21 @@ public class ServidorRMI extends UnicastRemoteObject implements IServidorRMI {
 
 	@Override
 	public String sendThisBack(String data) throws RemoteException {
-		System.out.println("LLego: "+data);
 		String ip;
+		
+		// Imprimo el mesaje recibido
+		System.out.println("LLego: "+data);
+		
 		try {
 			ip = IPManager.getIP();
 		} catch (UnknownHostException e) {
 			ip = "[no se puede obtener la IP]";
 		}
 		
-		String respuesta = data + "desde servidor "+ ip;
+		// Agrego la IP local al mensaje para enviarlo como respuesta 
+		String respuesta = data + " - desde servidor "+ ip;
 		System.out.println("Se devuelve al Cliente: "+respuesta);
+		
 		return respuesta;
 	}
 

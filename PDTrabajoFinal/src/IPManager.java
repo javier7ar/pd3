@@ -20,8 +20,7 @@ public class IPManager {
 		  // Jugamos con los bytes y cambiamos el bit del signo
 		  sIPAddress += bIPAddress[x] & 255;	   
 		}
-		System.out.println("Envio IP a registrar "+sIPAddress);
-		
+				
 		return sIPAddress;
 	}
 }

@@ -12,25 +12,26 @@ public class ClienteRMI {
 			System.exit(1);
 		}
 		try {
+				// Hago un loookup del ServidorDirectorio 
 				String rname = "//" + args[0] + ":" + Registry.REGISTRY_PORT + "/remote";
 				System.out.println("Conectando a "+rname);
 				IServidorDirectorio remoto = (IServidorDirectorio) Naming.lookup(rname);
+				// Solicito la IP del ServidorRMI
 				servidor = remoto.solicitarIPServidor();
 				System.out.println("Conectado");
 				
+				// Hago otro loookup para el ServidorRMI 
 				String sf= "//" + servidor + ":" + Registry.REGISTRY_PORT + "/remote";
 				System.out.println("Conectando a "+sf);
 				IServidorRMI servidorFinal = (IServidorRMI) Naming.lookup(sf);
 				System.out.println("Conectado");
 				
-				//int bufferlength = 100;
-				//byte[] buffer = new byte[bufferlength];
+				// uso el ServiodrRMI recibido
 				System.out.println("Enviando mensaje...");
-				String mensaje = args[0];
+				String mensaje = args[1];
 				String respuesta = servidorFinal.sendThisBack(mensaje);
 				System.out.println("Se recibio:"+respuesta);
 				
-				System.out.println("Termino");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

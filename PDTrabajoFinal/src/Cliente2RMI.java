@@ -12,17 +12,18 @@ public class Cliente2RMI {
 			System.exit(1);
 		}
 		try {
+				// Hago un loookup del ServidorDirectorio 
 				String rname = "//" + args[0] + ":" + Registry.REGISTRY_PORT + "/remote";
 				System.out.println("Solicitando servidor a "+rname);
 				IServidorDirectorio remoto = (IServidorDirectorio) Naming.lookup(rname);
+				// Solicito el ServidorRMI
 				servidor = remoto.solicitarServidor();
 				System.out.println("Servidor recibido");
 				
 				if (servidor != null) {
-					//int bufferlength = 100;
-					//byte[] buffer = new byte[bufferlength];		
+					// uso el ServiodrRMI recibido
 					System.out.println("Enviando mensaje...");
-					String mensaje = args[0];
+					String mensaje = args[1];
 					String respuesta = servidor.sendThisBack(mensaje);
 					
 					System.out.println("Se recibio:"+respuesta);
